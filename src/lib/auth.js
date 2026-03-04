@@ -69,8 +69,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
   },
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development" || true, // Enable for now to debug production
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "fallback_secret_for_build_only",
+  trustHost: true,
+  debug: true,
   logger: {
     error(code, metadata) {
       console.error("NextAuth Error:", code, metadata);
