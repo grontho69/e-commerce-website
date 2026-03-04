@@ -9,15 +9,26 @@ import { ShieldCheck, Truck, RotateCcw } from "lucide-react";
 
 export default async function ProductDetailsPage({ params }) {
   const { slug } = await params;
-  const db = await getDb();
-  
-  const rawProduct = await db.collection("products").findOne({ slug });
+  let product = null;
 
-  if (!rawProduct) {
-    notFound();
+  try {
+    const db = await getDb();
+    const rawProduct = await db.collection("products").findOne({ slug });
+    if (rawProduct) {
+      product = JSON.parse(JSON.stringify(rawProduct));
+    }
+  } catch (error) {
+    console.error("Product details build-time DB fetch failed:", error.message);
   }
 
-  const product = JSON.parse(JSON.stringify(rawProduct));
+  if (!product) {
+    // During build time, if we can't find the product, we might want to return notFound
+    // but we check if we are in production build to be safe
+    if (process.env.NODE_ENV === "production" && !process.env.MONGODB_URI) {
+       return <div className="pt-32 pb-40 text-center">Protocol Offline: Database connection required.</div>;
+    }
+    notFound();
+  }
 
   return (
     <div className="pt-24 pb-32 bg-neutral-50 min-h-screen">

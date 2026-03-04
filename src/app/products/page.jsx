@@ -6,47 +6,57 @@ import { Filter, SlidersHorizontal, ChevronDown, SearchX } from "lucide-react";
 import SortDropdown from "@/components/SortDropdown";
 
 export default async function ProductsPage({ searchParams }) {
-  const db = await getDb();
+  let products = [];
+  try {
+    const db = await getDb();
+    const search = await searchParams;
+    const category = search.category;
+    const filter = search.filter;
+    const searchQ = search.search;
+    const sortParam = search.sort || "newest";
+    
+    let query = {};
+    if (category) query.category = category;
+    
+    // Refined AAZBD inspired filtering
+    if (filter === "exclusive") query.tier = "Gold";
+    if (filter === "budget") query.price = { $lt: 1500 };
+    if (filter === "new") {
+      // Show items from last 30 days or just stay with sort order
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      query.createdAt = { $gte: thirtyDaysAgo };
+    }
+
+    if (searchQ) {
+      query.$or = [
+        { title: { $regex: searchQ, $options: "i" } },
+        { description: { $regex: searchQ, $options: "i" } },
+        { category: { $regex: searchQ, $options: "i" } }
+      ];
+    }
+    
+    let sort = { createdAt: -1 };
+    if (sortParam === "price-asc") sort = { price: 1 };
+    if (sortParam === "price-desc") sort = { price: -1 };
+    if (sortParam === "name-asc") sort = { title: 1 };
+    if (sortParam === "name-desc") sort = { title: -1 };
+    if (sortParam === "trending") sort = { tier: 1 }; 
+
+    const rawProducts = await db.collection("products")
+      .find(query)
+      .sort(sort)
+      .toArray();
+      
+    products = JSON.parse(JSON.stringify(rawProducts));
+  } catch (error) {
+    console.error("Products page build-time error:", error.message);
+  }
+
   const search = await searchParams;
+  const searchQ = search.search;
   const category = search.category;
   const filter = search.filter;
-  const searchQ = search.search;
-  const sortParam = search.sort || "newest";
-  
-  let query = {};
-  if (category) query.category = category;
-  
-  // Refined AAZBD inspired filtering
-  if (filter === "exclusive") query.tier = "Gold";
-  if (filter === "budget") query.price = { $lt: 1500 };
-  if (filter === "new") {
-    // Show items from last 30 days or just stay with sort order
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    query.createdAt = { $gte: thirtyDaysAgo };
-  }
-
-  if (searchQ) {
-    query.$or = [
-      { title: { $regex: searchQ, $options: "i" } },
-      { description: { $regex: searchQ, $options: "i" } },
-      { category: { $regex: searchQ, $options: "i" } }
-    ];
-  }
-  
-  let sort = { createdAt: -1 };
-  if (sortParam === "price-asc") sort = { price: 1 };
-  if (sortParam === "price-desc") sort = { price: -1 };
-  if (sortParam === "name-asc") sort = { title: 1 };
-  if (sortParam === "name-desc") sort = { title: -1 };
-  if (sortParam === "trending") sort = { tier: 1 }; 
-
-  const rawProducts = await db.collection("products")
-    .find(query)
-    .sort(sort)
-    .toArray();
-    
-  const products = JSON.parse(JSON.stringify(rawProducts));
 
   const pageTitle = searchQ
     ? `Results for "${searchQ}"`

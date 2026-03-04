@@ -19,9 +19,15 @@ import {
 import HeroCarousel from "@/components/HeroCarousel";
 
 export default async function Home() {
-  const db = await getDb();
-  const rawProducts = await db.collection("products").find({}).limit(8).toArray();
-  const products = JSON.parse(JSON.stringify(rawProducts));
+  let products = [];
+  try {
+    const db = await getDb();
+    const rawProducts = await db.collection("products").find({}).limit(8).toArray();
+    products = JSON.parse(JSON.stringify(rawProducts));
+  } catch (error) {
+    console.error("Home page build-time DB fetch failed:", error.message);
+    // Fallback or empty products for build time
+  }
 
   // AAZBD Inspired Categories
   const categoryTiles = [
