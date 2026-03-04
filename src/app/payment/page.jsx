@@ -10,8 +10,10 @@ import Price from "@/components/Price";
 import { Check, Wallet, CreditCard, Banknote, ArrowLeft, Lock, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 export default function PaymentPage() {
+  const { data: session, status } = useSession();
   const { cart, subtotal, clearCart, isInitialized } = useCart();
   const router = useRouter();
   const [paymentMethod, setPaymentMethod] = useState("cod");
@@ -20,11 +22,18 @@ export default function PaymentPage() {
   const [paymentDetails, setPaymentDetails] = useState({ trxId: "", senderNumber: "" });
 
   useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login?callbackUrl=/payment");
+      return;
+    }
+
     const saved = sessionStorage.getItem("shippingAddress");
     if (saved) {
       setShippingAddress(JSON.parse(saved));
+    } else {
+      router.push("/checkout");
     }
-  }, []);
+  }, [status, router]);
 
   const deliveryFee = subtotal > 5000 ? 0 : 60;
   const grandTotal = subtotal + deliveryFee;
@@ -83,7 +92,7 @@ export default function PaymentPage() {
 
   const selectedMethod = methods.find(m => m.id === paymentMethod);
 
-  if (!isInitialized || !shippingAddress) {
+  if (status === "loading" || !isInitialized || !shippingAddress) {
     return (
       <div className="pt-32 pb-40 min-h-screen bg-neutral-50">
         <Container>

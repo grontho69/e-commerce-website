@@ -21,6 +21,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   const headerRef = useRef(null);
@@ -224,7 +225,7 @@ export default function Header() {
               )}
 
               <div className="lg:hidden">
-                <Sheet>
+                <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <SheetTrigger asChild>
                     <button className="p-2 hover:bg-neutral-50 rounded-full transition-all">
                       <Menu size={24} />
@@ -240,6 +241,7 @@ export default function Header() {
                         <Link
                           key={link.name}
                           href={link.href}
+                          onClick={() => setIsMenuOpen(false)}
                           className="text-xl font-black uppercase tracking-tight py-4 border-b border-neutral-50 hover:text-primary transition-all text-neutral-900"
                         >
                           {link.name}
@@ -248,11 +250,31 @@ export default function Header() {
                       
                       <div className="mt-8 grid grid-cols-2 gap-4">
                         {session ? (
-                           <button onClick={() => signOut()} className="col-span-2 py-4 rounded-2xl bg-red-50 text-[11px] font-black uppercase tracking-[0.2em] text-red-500">Sign Out</button>
+                           <button 
+                             onClick={() => {
+                               signOut();
+                               setIsMenuOpen(false);
+                             }} 
+                             className="col-span-2 py-4 rounded-2xl bg-red-50 text-[11px] font-black uppercase tracking-[0.2em] text-red-500"
+                           >
+                             Sign Out
+                           </button>
                         ) : (
                            <>
-                              <Link href="/login" className="flex items-center justify-center py-4 rounded-2xl border-2 border-neutral-100 text-[11px] font-black uppercase tracking-[0.2em]">Log In</Link>
-                              <Link href="/register" className="flex items-center justify-center py-4 rounded-2xl bg-primary text-[11px] font-black uppercase tracking-[0.2em] text-white">Register</Link>
+                              <Link 
+                                href="/login" 
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center justify-center py-4 rounded-2xl border-2 border-neutral-100 text-[11px] font-black uppercase tracking-[0.2em]"
+                              >
+                                Log In
+                              </Link>
+                              <Link 
+                                href="/register" 
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center justify-center py-4 rounded-2xl bg-primary text-[11px] font-black uppercase tracking-[0.2em] text-white"
+                              >
+                                Register
+                              </Link>
                            </>
                         )}
                       </div>

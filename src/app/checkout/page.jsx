@@ -8,10 +8,12 @@ import { Input } from "@/components/ui/input";
 import { FadeIn } from "@/components/Motion";
 import Price from "@/components/Price";
 import { ShieldCheck, Truck, ArrowLeft, Send, ChevronDown } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "sonner";
 
 export default function CheckoutPage() {
+  const { data: session, status } = useSession();
   const { cart, subtotal, isInitialized } = useCart();
   const router = useRouter();
   const deliveryFee = subtotal > 5000 ? 0 : 60;
@@ -25,12 +27,15 @@ export default function CheckoutPage() {
   });
 
   useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login?callbackUrl=/checkout");
+    }
     if (isInitialized && cart.length === 0) {
       router.push("/cart");
     }
-  }, [isInitialized, cart, router]);
+  }, [status, isInitialized, cart, router]);
 
-  if (!isInitialized) {
+  if (status === "loading" || !isInitialized) {
     return (
       <div className="pt-32 pb-40 min-h-screen bg-white">
         <Container>

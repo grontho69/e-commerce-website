@@ -6,6 +6,11 @@ export async function POST(req) {
   try {
     const db = await getDb();
     const session = await auth();
+    
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized: Please log in to complete purchase." }, { status: 401 });
+    }
+
     const data = await req.json();
 
     const { paymentMethod, paymentDetails, ...rest } = data;
@@ -17,7 +22,7 @@ export async function POST(req) {
       ...rest,
       paymentMethod,
       paymentDetails: paymentMethod === "cod" ? null : paymentDetails,
-      userEmail: session?.user?.email || "guest@site.com",
+      userEmail: session.user.email,
       status: orderStatus,
       paymentStatus: paymentStatus,
       createdAt: new Date(),
