@@ -29,6 +29,10 @@ export async function POST(req) {
     return NextResponse.json({ message: "User registered successfully", id: result.insertedId.toString() }, { status: 201 });
   } catch (error) {
     console.error("Registration error:", error);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ 
+      message: "Internal server error", 
+      debug: error.message,
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined 
+    }, { status: 500 });
   }
 }
