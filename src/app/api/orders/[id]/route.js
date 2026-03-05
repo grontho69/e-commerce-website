@@ -5,7 +5,7 @@ import { ObjectId } from "mongodb";
 
 export async function GET(req, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const db = await getDb();
     
     // For simplicity/speed in success page, we allow fetching by ID

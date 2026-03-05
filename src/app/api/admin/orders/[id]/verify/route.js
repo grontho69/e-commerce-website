@@ -10,7 +10,7 @@ export async function PATCH(req, { params }) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
     const { action } = await req.json(); // verify or reject
     const db = await getDb();
 
@@ -48,7 +48,10 @@ export async function PATCH(req, { params }) {
 
     return NextResponse.json({ message: `Order successfully ${action}ed` });
   } catch (error) {
-    console.error("Verification error:", error);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    console.error("Order Verification Error:", error);
+    return NextResponse.json({ 
+      message: "Internal server error", 
+      debug: error.message 
+    }, { status: 500 });
   }
 }

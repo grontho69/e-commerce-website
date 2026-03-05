@@ -58,7 +58,9 @@ export default function AdminOrders() {
           paymentStatus: action === "verify" ? "paid" : "rejected" 
         } : o));
       } else {
-        toast.error("Process failed");
+        const data = await res.json();
+        const errorMessage = data.debug ? `Error: ${data.message} (${data.debug})` : data.message || "Process failed";
+        toast.error(errorMessage);
       }
     } catch (error) {
       toast.error("System error");
