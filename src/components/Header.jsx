@@ -122,7 +122,7 @@ export default function Header() {
               ))}
             </nav>
 
-            <div ref={actionsRef} className="flex items-center gap-3">
+            <div ref={actionsRef} className="flex items-center gap-2 md:gap-5 shrink-0">
               <div className="hidden xl:flex relative group">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-primary transition-all" size={14} />
                 <input 
@@ -135,20 +135,28 @@ export default function Header() {
                 />
               </div>
 
-              <div className="flex items-center gap-2 md:gap-4 ml-2">
-                <Link href="/wishlist" className="action-item relative p-2 md:p-3 text-black hover:text-primary hover:bg-neutral-50 rounded-full transition-all flex items-center justify-center">
-                  <Heart size={22} className={mounted && wishlistCount > 0 ? "fill-primary text-primary" : ""} />
+              <div className="flex items-center gap-1 md:gap-3">
+                <Link 
+                  href="/wishlist" 
+                  aria-label="Wishlist"
+                  className="action-item relative p-2 md:p-3 text-black hover:text-primary hover:bg-neutral-50 rounded-full transition-all flex items-center justify-center"
+                >
+                  <Heart size={22} className={`transition-all duration-300 ${mounted && wishlistCount > 0 ? "fill-primary text-primary" : "text-black"}`} />
                   {mounted && wishlistCount > 0 && (
-                    <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-primary text-[8px] font-black text-white flex items-center justify-center shadow-sm">
+                    <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-primary text-[8px] font-black text-white flex items-center justify-center shadow-sm border border-white">
                       {wishlistCount}
                     </span>
                   )}
                 </Link>
 
-                <Link href="/cart" className="action-item relative p-2 md:p-3 text-black hover:text-primary hover:bg-neutral-50 rounded-full transition-all flex items-center justify-center">
-                  <ShoppingBag size={22} />
+                <Link 
+                  href="/cart" 
+                  aria-label="Cart"
+                  className="action-item relative p-2 md:p-3 text-black hover:text-primary hover:bg-neutral-50 rounded-full transition-all flex items-center justify-center"
+                >
+                  <ShoppingBag size={22} className="text-black group-hover:text-primary transition-colors" />
                   {mounted && cartCount > 0 && (
-                    <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-black text-[8px] font-black text-white flex items-center justify-center shadow-sm">
+                    <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-black text-[8px] font-black text-white flex items-center justify-center shadow-sm border border-white">
                       {cartCount}
                     </span>
                   )}
