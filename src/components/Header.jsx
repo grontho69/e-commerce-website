@@ -39,8 +39,6 @@ export default function Header() {
     // GSAP Entrance
     const ctx = gsap.context(() => {
       gsap.from(logoRef.current, { y: -20, opacity: 0, duration: 1, ease: "expo.out" });
-      // Removed nav-link animation to fix visibility issues
-      gsap.from(".action-item", { scale: 0.8, opacity: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)", delay: 0.4 });
     }, headerRef);
 
     return () => {
@@ -137,9 +135,9 @@ export default function Header() {
                 />
               </div>
 
-              <div className="flex items-center gap-1 md:gap-2">
-                <Link href="/wishlist" className="action-item relative p-2.5 text-neutral-700 hover:text-primary hover:bg-neutral-50 rounded-full transition-all">
-                  <Heart size={20} className={mounted && wishlistCount > 0 ? "fill-primary text-primary border-none" : ""} />
+              <div className="flex items-center gap-2 md:gap-4 ml-2">
+                <Link href="/wishlist" className="action-item relative p-2 md:p-3 text-black hover:text-primary hover:bg-neutral-50 rounded-full transition-all flex items-center justify-center">
+                  <Heart size={22} className={mounted && wishlistCount > 0 ? "fill-primary text-primary" : ""} />
                   {mounted && wishlistCount > 0 && (
                     <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-primary text-[8px] font-black text-white flex items-center justify-center shadow-sm">
                       {wishlistCount}
@@ -147,8 +145,8 @@ export default function Header() {
                   )}
                 </Link>
 
-                <Link href="/cart" className="action-item relative p-2.5 text-neutral-700 hover:text-primary hover:bg-neutral-50 rounded-full transition-all">
-                  <ShoppingBag size={20} />
+                <Link href="/cart" className="action-item relative p-2 md:p-3 text-black hover:text-primary hover:bg-neutral-50 rounded-full transition-all flex items-center justify-center">
+                  <ShoppingBag size={22} />
                   {mounted && cartCount > 0 && (
                     <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-black text-[8px] font-black text-white flex items-center justify-center shadow-sm">
                       {cartCount}
@@ -238,14 +236,16 @@ export default function Header() {
                     </div>
                     <nav className="flex flex-col gap-2 p-8 overflow-y-auto">
                       {navLinks.map((link) => (
-                        <Link
+                        <button
                           key={link.name}
-                          href={link.href}
-                          onClick={() => setIsMenuOpen(false)}
-                          className="text-xl font-black uppercase tracking-tight py-4 border-b border-neutral-50 hover:text-primary transition-all text-neutral-900"
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            router.push(link.href);
+                          }}
+                          className="text-left text-xl font-black uppercase tracking-tight py-4 border-b border-neutral-50 hover:text-primary transition-all text-neutral-900"
                         >
                           {link.name}
-                        </Link>
+                        </button>
                       ))}
                       
                       <div className="mt-8 grid grid-cols-2 gap-4">

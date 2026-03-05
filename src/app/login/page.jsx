@@ -127,19 +127,7 @@ function LoginContent() {
               </CardContent>
             </Card>
 
-            <div className="mt-8 text-center bg-white/60 backdrop-blur-xl rounded-2xl p-8 border border-neutral-100 max-w-sm mx-auto shadow-sm">
-              <h4 className="text-[9px] font-bold uppercase tracking-widest text-neutral-400 mb-6 italic">Demo Access</h4>
-              <div className="space-y-4 text-[10px] font-bold tracking-widest uppercase">
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-neutral-300">User:</span>
-                  <code className="text-black bg-neutral-50 px-3 py-1 rounded">demo@volans.com</code>
-                </div>
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-neutral-300">Password:</span>
-                  <code className="text-black bg-neutral-50 px-3 py-1 rounded">Demo1234!</code>
-                </div>
-              </div>
-            </div>
+            
           </FadeIn>
         </div>
       </Container>
