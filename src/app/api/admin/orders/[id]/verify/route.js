@@ -19,9 +19,18 @@ export async function PATCH(req, { params }) {
       update = {
         $set: {
           paymentStatus: "paid",
-          status: "placed",
+          status: "confirmed",
           verifiedBy: session.user.email,
           verifiedAt: new Date(),
+          estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // Activate tracking timeline estimation
+        },
+        $push: {
+          timeline: {
+            status: "confirmed",
+            message: "Order has been confirmed and is ready to be processed.",
+            timestamp: new Date(),
+            isSystem: true
+          }
         }
       };
     } else if (action === "reject") {

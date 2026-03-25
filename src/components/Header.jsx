@@ -70,12 +70,12 @@ export default function Header() {
           <div className="flex justify-between items-center text-white/90">
              <div className="flex items-center gap-6">
                 <span className="flex items-center gap-2"><Truck size={12} className="text-primary" /> Free Shipping on BDT 5000+</span>
-                <span className="hidden md:flex items-center gap-2"><MapPin size={12} className="text-primary" /> Worldwide delivery</span>
+                <span className="hidden md:flex items-center gap-2"><MapPin size={12} className="text-primary" />All Bangladesh delivery</span>
              </div>
              <div className="flex items-center gap-6">
                 <Link href="/track-order" className="hover:text-primary transition-colors">Track Order</Link>
                 <div className="h-3 w-px bg-white/20" />
-                <span className="text-primary">Hotline: +880 1700-000000</span>
+                <span className="text-primary">Hotline: +880 1340083879</span>
              </div>
           </div>
         </Container>
@@ -197,7 +197,7 @@ export default function Header() {
                          </div>
                          <nav className="space-y-1">
                             <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-50 text-[10px] font-black uppercase tracking-widest text-neutral-700 transition-colors">
-                               <User size={14} /> Account Settings
+                               <User size={14} /> My orders
                             </Link>
                             {session.user.role === 'admin' && (
                                <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 hover:bg-primary/10 text-[10px] font-black uppercase tracking-widest text-primary transition-colors">

@@ -133,7 +133,7 @@ export default async function AdminDashboard() {
                           </td>
                           <td className="px-12 py-8">
                             <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] border ${
-                               order.status === 'pending_verification' ? 'bg-amber-500/10 text-amber-500 border-amber-500/10' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/10'
+                               order.status === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/10' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/10'
                             }`}>
                               {order.status.replace('_', ' ')}
                             </span>

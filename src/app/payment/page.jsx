@@ -192,15 +192,10 @@ export default function PaymentPage() {
                       
                       <Button 
                         onClick={placeOrder} 
-                        disabled={isPlacingOrder}
+                        isLoading={isPlacingOrder}
                         className="w-full h-14 rounded-xl text-sm font-bold uppercase tracking-widest shadow-lg shadow-black/5 bg-black text-white hover:bg-neutral-800 transition-all"
                       >
-                        {isPlacingOrder ? (
-                          <div className="flex items-center gap-3">
-                             <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                             <span>Processing...</span>
-                          </div>
-                        ) : `Complete Order`}
+                        {isPlacingOrder ? "Processing..." : "Complete Order"}
                       </Button>
                       
                       <div className="mt-8 flex items-center space-x-4 opacity-40 text-[9px] font-bold uppercase tracking-widest">

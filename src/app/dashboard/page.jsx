@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/mongodb";
+import Link from "next/link";
 import Container from "@/components/Container";
 import { FadeIn, StaggerContainer } from "@/components/Motion";
 import Price from "@/components/Price";
@@ -144,8 +145,11 @@ export default async function DashboardPage() {
                         <div className="flex items-center gap-2">
                            <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest">Payment Method: {order.paymentMethod.toUpperCase()}</span>
                         </div>
-                        <div className="flex space-x-2">
-                           <span className="text-[9px] font-bold text-primary uppercase tracking-widest">Secure Bank Authorization</span>
+                        <div className="flex space-x-4 items-center">
+                           <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest">Secure Bank Authorization</span>
+                           <Link href={`/dashboard/orders/${order._id}`} className="px-6 py-2 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-neutral-800 transition-colors shadow-sm">
+                              Track Order
+                           </Link>
                         </div>
                       </div>
                     </div>

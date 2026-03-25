@@ -23,7 +23,7 @@ export async function POST(req) {
       paymentMethod,
       paymentDetails: paymentMethod === "cod" ? null : paymentDetails,
       userEmail: session.user.email,
-      status: orderStatus,
+      status: "pending",
       paymentStatus: paymentStatus,
       createdAt: new Date(),
     });
